@@ -1,7 +1,7 @@
 
 angular
 
-.module('taskManagerApp', ['ngAnimate','ngRoute'])
+.module('taskManagerApp', ['ngAnimate','ngRoute','angularSpinner'])
 
 .config(function ($routeProvider, $httpProvider) {
     $routeProvider
@@ -42,8 +42,8 @@ angular
               console.log('Offline login...Routing to schedule next page...');
               $location.path('/trip/list');
               return;
-          }*/
-
+		}*/
+		$('#loaderSpinner').addClass('ng-hide');
 		console.log('no go to loop');
 	});
 })

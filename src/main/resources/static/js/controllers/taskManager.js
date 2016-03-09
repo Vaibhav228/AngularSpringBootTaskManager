@@ -15,6 +15,7 @@ angular
         //Get all tasks and display initially
         $http.get(urlBase + '/tasks/search/findByTaskArchived?archivedfalse=0').
         	success(function (data) {
+        		$('#loaderSpinner').removeClass('ng-hide');
         		if (data._embedded != undefined) {
                     $scope.tasks = data._embedded.tasks;
                 } else {
@@ -30,6 +31,7 @@ angular
                 $scope.taskPriority="";
                 $scope.taskStatus="";
                 $scope.toggle='!toggle';
+                $('#loaderSpinner').addClass('ng-hide');
             });
     }
 
@@ -41,6 +43,7 @@ angular
 			alert("Insufficient Data! Please provide values for task name, description, priortiy and status");
 		}
 		else{
+			$('#loaderSpinner').removeClass('ng-hide');
 			$http.post(urlBase + '/tasks', {
 				taskName: $scope.taskName,
 				taskDescription: $scope.taskDesc,
@@ -52,6 +55,7 @@ angular
 				console.log("Might be good to GET " + newTaskUri + " and append the task.");
 				//Refetching EVERYTHING every time can get expensive over time
 				//Better solution would be to $http.get(headers()["location"]) and add it to the list
+				$('#loaderSpinner').addClass('ng-hide');
 				findAllTasks();
 			});
 		}
@@ -60,7 +64,6 @@ angular
 	//Toggle selection for a given task by task id
 	$scope.toggleSelection = function toggleSelection(taskUri) {
 		var idx = $scope.selection.indexOf(taskUri);
-
 	    //Is currently selected HTTP PATCH to ACTIVE state
 	    if (idx > -1) {
 	    	$http.patch(taskUri, { taskStatus: 'ACTIVE' }).
