@@ -10,7 +10,7 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 	$http.defaults.headers.post["Content-Type"] = "application/json";
 
     function findAllTasks() {
-        //get all tasks and display initially
+        //Get all tasks and display initially
         $http.get(urlBase + '/tasks/search/findByTaskArchived?archivedfalse=0').
             success(function (data) {
                 if (data._embedded != undefined) {
@@ -46,7 +46,6 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
              taskStatus: $scope.taskStatus
          }).
 		  success(function(data, status, headers) {
-			 alert("Task added");
              var newTaskUri = headers()["location"];
              console.log("Might be good to GET " + newTaskUri + " and append the task.");
              // Refetching EVERYTHING every time can get expensive over time
@@ -60,12 +59,11 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 	  $scope.toggleSelection = function toggleSelection(taskUri) {
 	    var idx = $scope.selection.indexOf(taskUri);
 
-	    // is currently selected
-        // HTTP PATCH to ACTIVE state
+	    //Is currently selected HTTP PATCH to ACTIVE state
 	    if (idx > -1) {
 	      $http.patch(taskUri, { taskStatus: 'ACTIVE' }).
 		  success(function(data) {
-		      alert("Task unmarked");
+			  console.log("Task unmarked");
               findAllTasks();
 		    });
 	      $scope.selection.splice(idx, 1);
@@ -76,7 +74,7 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 	    else {
 	      $http.patch(taskUri, { taskStatus: 'COMPLETED' }).
 		  success(function(data) {
-			  alert("Task marked completed");
+			  console.log("Task marked completed");
               findAllTasks();
 		    });
 	      $scope.selection.push(taskUri);
@@ -91,7 +89,7 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
                   $http.patch(taskUri, { taskArchived: 1});
               }
           });
-          alert("Successfully Archived");
+          console.log("Successfully Archived");
           console.log("It's risky to run this without confirming all the patches are done. when.js is great for that");
           findAllTasks();
 	  };
